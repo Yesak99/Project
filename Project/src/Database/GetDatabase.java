@@ -6,7 +6,9 @@ package Database;
 	import java.sql.PreparedStatement;
 	import java.sql.ResultSet;
 	import java.util.ArrayList;
+	import javafx.collections.FXCollections;
 	import javafx.collections.ObservableList;
+	
 	
 	/* 
 	import businessLogicLayer.Account;
@@ -18,7 +20,8 @@ package Database;
 
 		// Login to database
 		public class GetDatabase {
-		static final String databaseURL = "com.mysql.cj.jdbc.Driver";
+		static final String driver = "com.mysql.cj.jdbc.Driver";
+		static final String databaseurl = "jdbc:mysql://localhost/sys?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		static final String databaseUsername = "root";
 		static final String databasePassword = "javaflights123";
 
@@ -63,17 +66,17 @@ package Database;
 			return account;
 		}
 	
-	// Access all flights in the database
-		public static ObservableList<Flight> getFlights() {
+		// Access all flights in the database
+		public static ObservableList/*<Flight Class>*/getFlights() {
 			
-			 Observable<Flight> flights = FXCollections.observableArrayList();
+			 ObservableList/*<Flight Class>*/flights = FXCollections.observableArrayList();
 
 			
 			try {
 
-				Class.forName("java.sql.Driver");
+				Class.forName(driver);
 
-				Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword);
+				Connection connection = DriverManager.getConnection(databaseurl, databaseUsername, databasePassword);
 
 				PreparedStatement preparedStatement = connection
 						.prepareStatement("SELECT * FROM flights");
@@ -84,18 +87,20 @@ package Database;
 
 				while (rs.next()) {
 					
-					Flight flight = new Flight();
-
-					flight.setflightnum(rs.getInt("flight_number"));
-					flight.setDepartureCity(rs.getString("departure_city"));
-					flight.setDestinationCity(rs.getString("destination_city"));
-					flight.setDepartTime(rs.getString("depart_time"));
-					flight.setArriveTime(rs.getString("arrive_time"));
-					flight.setFlightDate(rs.getString("flight_date"));
-					flight.setReturnFlight(rs.getString("return_day"));
-					flight.setNumberOfSeats(rs.getInt("num_seats"));
+					/* INSERT FLIGHT CLASS */
 					
-					flights.add(flight);
+					// Flight flight = new Flight(); 
+
+//					flight.setflightnum(rs.getInt("flight_number"));
+//					flight.setDepartureCity(rs.getString("departure_city"));
+//					flight.setDestinationCity(rs.getString("destination_city"));
+//					flight.setDepartTime(rs.getString("depart_time"));
+//					flight.setArriveTime(rs.getString("arrive_time"));
+//					flight.setFlightDate(rs.getString("flight_date"));
+//					flight.setReturnFlight(rs.getString("return_day"));
+//					flight.setNumberOfSeats(rs.getInt("num_seats"));
+//					
+//					flights.add(flight);
 				}
 
 				connection.close();
@@ -107,6 +112,51 @@ package Database;
 			return flights;
 			
 		}
+		
+		// Get flight bookings 
+		public static ObservableList/*<Booking class>*/retrieveBookings(int account_id) {
+
+			 ObservableList/*<Booking class>*/ bookings = FXCollections.observableArrayList();
+
+			
+			try {
+
+				Class.forName(driver);
+
+				Connection connection = DriverManager.getConnection(databaseurl, databaseUsername, databasePassword);
+
+				PreparedStatement preparedStatement = connection
+						.prepareStatement("SELECT * FROM bookedflights WHERE account_id=" + "'" + account_id + "'");
+
+				ResultSet res = preparedStatement.executeQuery();
+
+				while (res.next()) {
+					
+					/*INSERT BOOKING CLASS */
+					
+					/*Booking class */ booked = new /*Booking class */ (res.getInt("ticket_number"),
+//												(res.getInt("flight_number")),
+//												(res.getString("flight_date")),
+//												(res.getString("flight_time")),
+//												(res.getString("departCity")),
+//												(res.getString("destinationCity")),
+//												(res.getString("return_flight_date")));
+//							
+					bookings.add(booked);
+
+				}
+
+				connection.close();
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+
+			}
+		
+		return bookings;
+
+		}
+		
 		public static Connection getConnection() throws Exception {
 			
 			try {
