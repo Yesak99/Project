@@ -26,13 +26,13 @@ package Database;
 		static final String databasePassword = "javaflights123";
 
 		//Accesses an account in the database
+		
 		public static /*Enter Account class*/ GetAccount(String usern) {
 			
-			/*Account*/ account = new /*Account*/();
+			/*Account*/ useraccount = new /*Account*/();
 
 			try {
-
-				Class.forName("java.sql.Driver");
+				Class.forName(driver);
 
 				Connection connection = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword);
 
@@ -55,7 +55,6 @@ package Database;
 					account.setSsn(res.getInt("ssn"));
 					account.setSecurityQuestion(res.getString("security_q"));
 					account.setSecurityAnswer(res.getString("security_a"));
-		
 				}
 				connection.close();
 
@@ -63,7 +62,7 @@ package Database;
 				e.printStackTrace();
 
 			}
-			return account;
+			return useraccount;
 		}
 	
 		// Access all flights in the database
@@ -81,24 +80,24 @@ package Database;
 				PreparedStatement preparedStatement = connection
 						.prepareStatement("SELECT * FROM flights");
 
-				ResultSet rs = preparedStatement.executeQuery();
+				ResultSet flightresults = preparedStatement.executeQuery();
 				
 				
 
-				while (rs.next()) {
+				while (flightresults.next()) {
 					
 					/* INSERT FLIGHT CLASS */
 					
 					// Flight flight = new Flight(); 
 
-//					flight.setflightnum(rs.getInt("flight_number"));
-//					flight.setDepartureCity(rs.getString("departure_city"));
-//					flight.setDestinationCity(rs.getString("destination_city"));
-//					flight.setDepartTime(rs.getString("depart_time"));
-//					flight.setArriveTime(rs.getString("arrive_time"));
-//					flight.setFlightDate(rs.getString("flight_date"));
-//					flight.setReturnFlight(rs.getString("return_day"));
-//					flight.setNumberOfSeats(rs.getInt("num_seats"));
+//					flight.setflightnum(flightresults.getInt("flight_number"));
+//					flight.setDepartureCity(flightresults.getString("departure_city"));
+//					flight.setDestinationCity(flightresults.getString("destination_city"));
+//					flight.setDepartTime(flightresults.getString("depart_time"));
+//					flight.setArriveTime(flightresults.getString("arrive_time"));
+//					flight.setFlightDate(flightresults.getString("flight_date"));
+//					flight.setReturnFlight(flightresults.getString("return_day"));
+//					flight.setNumberOfSeats(flightresults.getInt("number_seats"));
 //					
 //					flights.add(flight);
 				}
@@ -128,21 +127,22 @@ package Database;
 				PreparedStatement preparedStatement = connection
 						.prepareStatement("SELECT * FROM bookedflights WHERE account_id=" + "'" + account_id + "'");
 
-				ResultSet res = preparedStatement.executeQuery();
+				ResultSet bookingresults = preparedStatement.executeQuery();
 
-				while (res.next()) {
+				while (bookingresults.next()) {
 					
 					/*INSERT BOOKING CLASS */
 					
-					/*Booking class */ booked = new /*Booking class */ (res.getInt("ticket_number"),
-//												(res.getInt("flight_number")),
-//												(res.getString("flight_date")),
-//												(res.getString("flight_time")),
-//												(res.getString("departCity")),
-//												(res.getString("destinationCity")),
-//												(res.getString("return_flight_date")));
-//							
-					bookings.add(booked);
+					/*Booking class */ booked = new /*Booking class */ 
+//													(bookingresults.getInt("ticket_number"),
+////												(bookingresults.getInt("flight_number")),
+////												(bookingresults.getString("flight_date")),
+////												(bookingresults.getString("flight_time")),
+////												(bookingresults.getString("departCity")),
+////												(bookingresults.getString("destinationCity")),
+////												(bookingresults.getString("return_flight_date")));
+////							
+//					bookings.add(booked);
 
 				}
 
@@ -156,23 +156,7 @@ package Database;
 		return bookings;
 
 		}
-		
-		public static Connection getConnection() throws Exception {
-			
-			try {
-				String driver = "com.mysql.cj.jdbc.Driver";
-				String url = "jdbc:mysql://localhost/sys?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"; // local host can be changed to your ip address of your server if yyou're not using local
-				String username = "root";
-				String password = "javaflights123";
-				Class.forName(driver);
-				
-				Connection conn = DriverManager.getConnection(url,username,password);
-				System.out.println("Connected");
-				return conn;
-			} catch(Exception e){System.out.println(e);}
-				
-			return null; 
-		}
+	
 	
 
 }
