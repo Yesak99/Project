@@ -11,11 +11,9 @@ package Database;
 	
 	
 	/* 
-	import businessLogicLayer.Account;
-	import businessLogicLayer.Booking;
-	import businessLogicLayer.Flight;
-	import businessLogicLayer.Flight.*;
-	
+	import account from logic package
+	import bookings from logic package
+	import flights from logic package
 	 */
 
 		// Login to database
